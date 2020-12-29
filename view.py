@@ -8,6 +8,11 @@ from time import sleep
 SignupForm, _ = uic.loadUiType("registration.ui")
 WelcomeForm, _ = uic.loadUiType("welcum.ui")
 
+def alert(msg):
+    error_dialog = QtWidgets.QMessageBox()
+    error_dialog.setText(msg)
+    error_dialog.exec_()
+
 
 class WelcomeUi(QtWidgets.QDialog, WelcomeForm):
     def __init__(self):
@@ -39,13 +44,15 @@ class SignupUi(QtWidgets.QDialog, SignupForm):
         db = DB()
         login = self.createLogEdit.text()
         passw = self.createPassEdit.text()
-        exist = db.userExist(login, passw)
-        if exist:
-            error_dialog = QtWidgets.QMessageBox()
-            error_dialog.setText('U TEBYA SHO SHIZA? ILI PEREDOZ?')
-            error_dialog.exec_()
+        exist = db.select("users", "name", login)
+
+        if exist or not login.replace("_", "").isalnum():
+            alert('U TEBYA SHO SHIZA? ILI PEREDOZ?')
         else:
             user = User(login, passw)
+            alert('WELCUM TO THE CLUB, BUDDY (EST PROBITIE)')
+
+
 
 
 if __name__ == "__main__":

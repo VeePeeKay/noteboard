@@ -52,7 +52,7 @@ class DB:
     def insertUser(self, name: str, passw: str):
         conn = sqlite3.connect(self.path)
         c = conn.cursor()
-        c.execute("INSERT INTO users (name) VALUES (?, ?)", (name, passw))
+        c.execute("INSERT INTO users (name, password) VALUES (?, ?)", (name, passw))
         number = c.execute("SELECT * FROM users WHERE name=?", (name, )).fetchall()[0][0]
         conn.commit()
         conn.close()
@@ -234,6 +234,6 @@ class Board:
 
 if __name__ == "__main__":
     note = Note("Я устал")
-    note.addUser("richkats")
-    note.addUser("victorhom19")
+    user = User("victorhom19")
+    print(user)
     print(f"{note.number}, {note.user}, {note.subnote}, {note.tick}, {note.text}")
