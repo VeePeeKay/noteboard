@@ -15,18 +15,10 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.setEnabled(True)
-        Dialog.resize(464, 448)
+        Dialog.resize(491, 422)
         Dialog.setAcceptDrops(False)
         Dialog.setAutoFillBackground(False)
         Dialog.setStyleSheet("background-color: #FF7F50")
-        self.welcome = QtWidgets.QLabel(Dialog)
-        self.welcome.setGeometry(QtCore.QRect(110, 60, 281, 41))
-        font = QtGui.QFont()
-        font.setFamily("Segoe Print")
-        font.setPointSize(24)
-        self.welcome.setFont(font)
-        self.welcome.setStyleSheet("text-align:center")
-        self.welcome.setObjectName("welcome")
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(110, 120, 131, 21))
         self.label.setObjectName("label")
@@ -81,6 +73,20 @@ class Ui_Dialog(object):
         self.registrButt.setIconSize(QtCore.QSize(16, 13))
         self.registrButt.setObjectName("registrButt")
         self.verticalLayout.addWidget(self.registrButt)
+        self.verticalLayoutWidget_2 = QtWidgets.QWidget(Dialog)
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(110, 30, 266, 80))
+        self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.welcome = QtWidgets.QLabel(self.verticalLayoutWidget_2)
+        font = QtGui.QFont()
+        font.setFamily("Segoe Print")
+        font.setPointSize(24)
+        self.welcome.setFont(font)
+        self.welcome.setStyleSheet("text-align:center")
+        self.welcome.setObjectName("welcome")
+        self.verticalLayout_2.addWidget(self.welcome)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -88,7 +94,6 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.welcome.setText(_translate("Dialog", "Welcome to club"))
         self.label.setText(_translate("Dialog", "Введите логин"))
         self.signLog.setHtml(_translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -103,13 +108,4 @@ class Ui_Dialog(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
         self.loginButt.setText(_translate("Dialog", "Войти"))
         self.registrButt.setText(_translate("Dialog", "Регистрация"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
-    sys.exit(app.exec_())
+        self.welcome.setText(_translate("Dialog", "Welcome to club"))
