@@ -26,23 +26,33 @@ class DB:
             "tick"	INTEGER NOT NULL);""")
             c.executescript("""CREATE TABLE "users" (
             "id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-            "name"	TEXT NOT NULL);""")
+            "name"	TEXT NOT NULL,
+            "password" TEXT NOT NULL);""")
             conn.commit()
             conn.close()
 
     def select(self, tableName: str, filterName: str, value):
         conn = sqlite3.connect(self.path)
         c = conn.cursor()
-        c.execute(f"SELECT * FROM {tableName} WHERE {filterName}=?", (value, ))
+        c.execute(f"SELECT * FROM {tableName} WHERE {filterName}=(?)", (value, ))
         data = c.fetchall()
         conn.commit()
         conn.close()
         return data
 
-    def insertUser(self, name: str):
+    def userExist(self, name: str, passw: str):
         conn = sqlite3.connect(self.path)
         c = conn.cursor()
-        c.execute("INSERT INTO users (name) VALUES (?)", (name, ))
+        c.execute(f"SELECT * FROM users WHERE name=(?) AND password=(?)", (name, passw))
+        data = c.fetchall()
+        conn.commit()
+        conn.close()
+        return data
+
+    def insertUser(self, name: str, passw: str):
+        conn = sqlite3.connect(self.path)
+        c = conn.cursor()
+        c.execute("INSERT INTO users (name) VALUES (?, ?)", (name, passw))
         number = c.execute("SELECT * FROM users WHERE name=?", (name, )).fetchall()[0][0]
         conn.commit()
         conn.close()
@@ -74,27 +84,31 @@ class DB:
 
 
 class User:
-    def __init__(self, user):
+    def __init__(self, user, passw=""):
         db = DB()
         if type(user) is str:
             name = user
             data = db.select("users", "name", name)
-            print("data = ", data)
+            print("data =", data)
             if data:
                 self.number = data[0][0]
                 self.name = data[0][1]
+                self.password = data[0][2]
             else:
-                self.number = db.insertUser(name)
+                self.number = db.insertUser(name, passw)
                 self.name = name
+                self.password = passw
 
         elif type(user) is int:
             data = db.select("users", "id", user)
             if data:
                 self.number = data[0][0]
                 self.name = data[0][1]
+                self.password = data[0][2]
             else:
                 self.number = None
                 self.name = None
+                self.password = None
 
     def __str__(self):
         return str(self.number)
