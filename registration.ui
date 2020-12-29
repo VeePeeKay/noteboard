@@ -132,6 +132,9 @@
    <property name="frame">
     <bool>false</bool>
    </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
+   </property>
   </widget>
   <widget class="QLineEdit" name="sendCodeEdit">
    <property name="geometry">
@@ -144,6 +147,9 @@
    </property>
    <property name="styleSheet">
     <string notr="true">background-color:#ffa852</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly</set>
    </property>
    <property name="frame">
     <bool>false</bool>
