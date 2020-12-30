@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>471</width>
+    <height>340</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #FF7F50</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>20</y>
+     <width>561</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Segoe Print</family>
+     <pointsize>18</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Введите логин пользователя</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="adminSearch">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>90</y>
+     <width>341</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#ffa852</string>
+   </property>
+   <property name="frame">
+    <bool>false</bool>
+   </property>
+   <property name="clearButtonEnabled">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>160</y>
+     <width>221</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="adminAddButt">
+      <property name="styleSheet">
+       <string notr="true"> display: inline-block;
+    text-decoration: none;
+    background-color: #ffa852;
+    color: #006089;
+    border: 3px solid #d9812f;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 7px 10px; 
+    transition: all 0.8s ease;</string>
+      </property>
+      <property name="text">
+       <string>Поиск</string>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="adminCancelButt">
+      <property name="styleSheet">
+       <string notr="true"> display: inline-block;
+    text-decoration: none;
+    background-color: #ffa852;
+    color: #006089;
+    border: 3px solid #d9812f;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 7px 10px; 
+    transition: all 0.8s ease;</string>
+      </property>
+      <property name="text">
+       <string>Выход</string>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
