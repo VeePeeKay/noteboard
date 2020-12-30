@@ -83,7 +83,7 @@ class DB:
     def delete(self, tableName: str, filterName: str, value):
         conn = sqlite3.connect(self.path)
         c = conn.cursor()
-        c.execute(f"DELETE FROM {tableName} WHERE ?=?", (filterName, value))
+        c.execute(f"DELETE FROM {tableName} WHERE {filterName}=?", (value, ))
         conn.commit()
         conn.close()
 
@@ -214,6 +214,23 @@ class Note:
         data = json.dumps(data)
         db.replace("notes", "user", self.number, data)
 
+    def delUser(self, user):
+        db = DB()
+        user = User(user)
+        user_ids = [i.number for i in self.user]
+        if user.number in user_ids:
+            for u in self.user:
+                if u.number == user.number:
+                    self.user.remove(u)
+        data = []
+        for i in self.user:
+            data.append(str(i))
+        data = json.dumps(data)
+        db.replace("notes", "user", self.number, data)
+        print(self.user)
+        if not self.user:
+            self.delete()
+
     def addSubnote(self, note):
         db = DB()
         note = Note(note)
@@ -259,7 +276,8 @@ class Board:
 
 
 if __name__ == "__main__":
-    note = Note(8)
+    note = Note(5)
+    note.delUser(5)
     #note.addUser(9)
     #note.setDate(datetime.datetime.timestamp(datetime.datetime.now()))
     #user = User("victorhom19")

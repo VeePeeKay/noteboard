@@ -76,10 +76,13 @@ class MainUi(QtWidgets.QDialog, MainForm):
         self.all_dates = {}
         self.updateData()
         self.addEventButt.clicked.connect(self.find_date)
+        self.clearButt.clicked.connect(self.clearNotes)
 
     def updateData(self):
         notes = [Note(i) for i in self.user.getNotes()]
         print(notes)
+        self.textBrowser.clear()
+        self.all_dates = {}
         for note in notes:
             dt = datetime.fromtimestamp(note.date)
             string_date = QDateTime(dt.date(), dt.time()).date().getDate()
@@ -109,12 +112,15 @@ class MainUi(QtWidgets.QDialog, MainForm):
             self.textBrowser.append(f'{key} - {self.all_dates[key]}')
 
         dt = QDateTime(self.calendarWidget.selectedDate(), self.timeEdit.time())
-
-        print(self.WriteEdit.text(), dt.toTime_t())
         note = Note(self.WriteEdit.text(), dt.toTime_t())
-        print(self.user)
-        print(self.user.number)
         note.addUser(self.user.number)
+
+    def clearNotes(self):
+        notes = [Note(i) for i in self.user.getNotes()]
+        for note in notes:
+            print(note)
+            note.delUser(self.user.number)
+        self.updateData()
 
     def toLogin(self):
         self.welcome = WelcomeUi()
