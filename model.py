@@ -90,7 +90,6 @@ class DB:
     def replace(self, tableName: str, filterName: str, number, new_value):
         conn = sqlite3.connect(self.path)
         c = conn.cursor()
-        #c.execute(f"REPLACE INTO {tableName} (id, {filterName}) VALUES (?, ?)", (number, new_value))
         c.execute(f"UPDATE {tableName} SET {filterName} = ? WHERE id=?", (new_value, number))
         conn.commit()
         conn.close()
@@ -102,7 +101,6 @@ class User:
         if type(user) is str:
             name = user
             data = db.select("users", "name", name)
-            print("data =", data)
             if data:
                 self.number = data[0][0]
                 self.name = data[0][1]
@@ -153,11 +151,6 @@ class Note:
                     users = json.loads(data[0][1])
                     for i in users:
                         user = User(int(i))
-                        '''
-                        if user.number not in selfusers:
-                            print("user is not in selfusers")
-                            self.user.append(user)
-                        '''
 
                 self.text = data[0][2]
 
@@ -227,7 +220,6 @@ class Note:
             data.append(str(i))
         data = json.dumps(data)
         db.replace("notes", "user", self.number, data)
-        print(self.user)
         if not self.user:
             self.delete()
 
@@ -273,15 +265,3 @@ class Board:
             data.append(str(i))
         data = json.dumps(data)
         db.replace("notes", "subnote", self.number, data)
-
-
-if __name__ == "__main__":
-    note = Note(5)
-    note.delUser(5)
-    #note.addUser(9)
-    #note.setDate(datetime.datetime.timestamp(datetime.datetime.now()))
-    #user = User("victorhom19")
-    #print(user)
-    #user = User("icen")
-    #print()
-    print(f"{note.number}, {note.user}, {note.subnote}, {note.tick}, {note.text}, {note.date}")
