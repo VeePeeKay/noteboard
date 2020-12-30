@@ -78,7 +78,7 @@
     transition: all 0.8s ease;</string>
       </property>
       <property name="text">
-       <string>Добавить</string>
+       <string>Поиск</string>
       </property>
       <property name="default">
        <bool>false</bool>
