@@ -3,6 +3,7 @@ import json
 import random
 import sqlite3
 import os
+import datetime
 
 DB_PATH = "static/board.db"
 
@@ -23,7 +24,8 @@ class DB:
             "user"	TEXT,
             "text"	TEXT NOT NULL,
             "subnote"	INTEGER,
-            "tick"	INTEGER NOT NULL);""")
+            "tick"	INTEGER NOT NULL,
+            "date"	timestamp);""")
             c.executescript("""CREATE TABLE "users" (
             "id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             "name"	TEXT NOT NULL,
@@ -122,7 +124,7 @@ class User:
 
 
 class Note:
-    def __init__(self, note):
+    def __init__(self, note, date=datetime.datetime.timestamp(datetime.datetime.now())):
         self.user = []
         self.subnote = []
         db = DB()
@@ -149,12 +151,14 @@ class Note:
                         note = Note(int(i))
 
                 self.tick = bool(data[0][4])
+                self.date = data[0][5]
             else:
                 self.number = db.insertNote(text)
                 self.user = []
                 self.text = text
                 self.subnote = []
                 self.tick = False
+                self.date = date
 
         if type(note) is int:
             data = db.select("notes", "id", note)
@@ -170,12 +174,17 @@ class Note:
                 else:
                     self.subnote = None
                 self.tick = bool(data[0][4])
+                self.date = data[0][5]
 
     def __str__(self):
         return str(self.number)
 
     def __repr__(self):
         return str(self.number)
+
+    def setDate(self, date):
+        db = DB()
+        db.replace("notes", "date", self.number, date)
 
     def addUser(self, user):
         db = DB()
@@ -234,6 +243,7 @@ class Board:
 
 if __name__ == "__main__":
     note = Note("Я устал")
-    user = User("victorhom19")
-    print(user)
-    print(f"{note.number}, {note.user}, {note.subnote}, {note.tick}, {note.text}")
+    note.setDate(datetime.datetime.timestamp(datetime.datetime.now()))
+    #user = User("victorhom19")
+    #print(user)
+    print(f"{note.number}, {note.user}, {note.subnote}, {note.tick}, {note.text}, {note.date}")
