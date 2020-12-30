@@ -25,7 +25,7 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>210</x>
+     <x>170</x>
      <y>20</y>
      <width>471</width>
      <height>61</height>
@@ -64,30 +64,6 @@
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QPushButton" name="checkLogButt">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"> display: inline-block;
-    text-decoration: none;
-    background-color: #ffa852;
-    color: #006089;
-    border: 3px solid #d9812f;
-    border-radius: 5px;
-    font-size: 16px;
-    padding: 7px 10px; 
-    transition: all 0.8s ease;</string>
-      </property>
-      <property name="text">
-       <string>Посмотреть входы</string>
-      </property>
-      <property name="default">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
     <item>
      <widget class="QPushButton" name="addRememberButt">
       <property name="styleSheet">
