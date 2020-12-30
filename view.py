@@ -2,6 +2,8 @@
 
 import sys
 from PyQt5 import QtWidgets, uic
+from PyQt5.QtCore import QDateTime
+
 from model import *
 import logging
 from time import sleep
@@ -72,27 +74,47 @@ class MainUi(QtWidgets.QDialog, MainForm):
         self.user = user
         self.ExitButt.clicked.connect(self.toLogin)
         self.all_dates = {}
-        self.pushButton.clicked.connect(self.find_date)
+        self.updateData()
+        self.addEventButt.clicked.connect(self.find_date)
+
+    def updateData(self):
+        notes = [Note(i) for i in self.user.getNotes()]
+        print(notes)
+        for note in notes:
+            dt = datetime.fromtimestamp(note.date)
+            string_date = QDateTime(dt.date(), dt.time()).date().getDate()
+            print(string_date)
+            if int(string_date[1]) <= 9:
+                string_date = (string_date[0], '0' + str(string_date[1]), string_date[-1])
+            if int(string_date[2]) <= 9:
+                string_date = (string_date[0], str(string_date[1]), '0' + str(string_date[-1]))
+            line_edit = note.text
+            self.all_dates[
+                f'{string_date[0]}-{string_date[1]}-{string_date[2]}-{dt.time()}'] = line_edit
+            self.textBrowser.clear()
+            for key in sorted(self.all_dates.keys()):
+                self.textBrowser.append(f'{key} - {self.all_dates[key]}')
 
     def find_date(self):
-        # получаем дату
         string_date = self.calendarWidget.selectedDate().getDate()
-        # добавляем ноль, елси месяц <= 9
         if int(string_date[1]) <= 9:
             string_date = (string_date[0], '0' + str(string_date[1]), string_date[-1])
-        # добавляем ноль, елси день <= 9
         if int(string_date[2]) <= 9:
             string_date = (string_date[0], str(string_date[1]), '0' + str(string_date[-1]))
-        # берем текст из line edit
         line_edit = self.WriteEdit.text()
-        # задаем словарю новое значение или переопределяем старое
         self.all_dates[
             f'{string_date[0]}-{string_date[1]}-{string_date[2]}-{self.timeEdit.time().toString()}'] = line_edit
-        # изюавляемся от повторов
         self.textBrowser.clear()
-        # сортируем даты и выводим их
         for key in sorted(self.all_dates.keys()):
             self.textBrowser.append(f'{key} - {self.all_dates[key]}')
+
+        dt = QDateTime(self.calendarWidget.selectedDate(), self.timeEdit.time())
+
+        print(self.WriteEdit.text(), dt.toTime_t())
+        note = Note(self.WriteEdit.text(), dt.toTime_t())
+        print(self.user)
+        print(self.user.number)
+        note.addUser(self.user.number)
 
     def toLogin(self):
         self.welcome = WelcomeUi()

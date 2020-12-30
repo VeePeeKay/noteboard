@@ -3,7 +3,7 @@ import json
 import random
 import sqlite3
 import os
-import datetime
+from datetime import datetime
 
 DB_PATH = "static/board.db"
 
@@ -25,7 +25,7 @@ class DB:
             "text"	TEXT NOT NULL,
             "subnote"	INTEGER,
             "tick"	INTEGER NOT NULL,
-            "date"	timestamp);""")
+            "date"	INTEGER);""")
             c.executescript("""CREATE TABLE "users" (
             "id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             "name"	TEXT NOT NULL,
@@ -50,6 +50,17 @@ class DB:
         conn.commit()
         conn.close()
         return data
+
+    def userGetNotes(self, number):
+        if type(number) is int:
+            number = str(number)
+        conn = sqlite3.connect(self.path)
+        c = conn.cursor()
+        c.execute(f"SELECT (notes.id) FROM notes, json_each(user) WHERE value=(?)", (number, ))
+        data = c.fetchall()
+        conn.commit()
+        conn.close()
+        return [int(i[0]) for i in data]
 
     def insertUser(self, name: str, passw: str):
         conn = sqlite3.connect(self.path)
@@ -122,9 +133,14 @@ class User:
         db = DB()
         db.delete("names", "id", self.number)
 
+    def getNotes(self):
+        db = DB()
+        ids = db.userGetNotes(self.number)
+        return ids
+
 
 class Note:
-    def __init__(self, note, date=datetime.datetime.timestamp(datetime.datetime.now())):
+    def __init__(self, note, date=int(datetime.timestamp(datetime.now()))):
         self.user = []
         self.subnote = []
         db = DB()
@@ -158,14 +174,14 @@ class Note:
                 self.text = text
                 self.subnote = []
                 self.tick = False
-                self.date = date
+                self.setDate(date)
 
         if type(note) is int:
             data = db.select("notes", "id", note)
             if data:
                 self.number = data[0][0]
                 if data[0][1]:
-                    self.user = User(data[0][1])
+                    self.user = [User(int(i)) for i in json.loads(data[0][1])]
                 else:
                     self.user = None
                 self.text = data[0][2]
@@ -183,6 +199,7 @@ class Note:
         return str(self.number)
 
     def setDate(self, date):
+        self.date = date
         db = DB()
         db.replace("notes", "date", self.number, date)
 
@@ -242,8 +259,11 @@ class Board:
 
 
 if __name__ == "__main__":
-    note = Note("Я устал")
-    note.setDate(datetime.datetime.timestamp(datetime.datetime.now()))
+    note = Note(8)
+    #note.addUser(9)
+    #note.setDate(datetime.datetime.timestamp(datetime.datetime.now()))
     #user = User("victorhom19")
     #print(user)
+    #user = User("icen")
+    #print()
     print(f"{note.number}, {note.user}, {note.subnote}, {note.tick}, {note.text}, {note.date}")
